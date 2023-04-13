@@ -6,7 +6,7 @@ preparing the selected dish, accompanied by a helpful video tutorial. Moreover, 
 
 # 💡 Preview
 
-download app apk : https://www.mediafire.com/file/r27yhrexk7203iw/EasyFood.apk/file
+📱 download app apk : https://www.mediafire.com/file/r27yhrexk7203iw/EasyFood.apk/file
 
 <p align="center">
   <img src="https://user-images.githubusercontent.com/37695970/231596964-bf7bbc1c-00f7-4c2e-b80e-b67efa89e5cb.png" width="279" height="600">
