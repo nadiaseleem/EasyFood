@@ -2,7 +2,7 @@
 
 an android application that simplifies the cooking process by presenting users with a diverse
 selection of food options from various categories. The app provides comprehensive instructions for
-preparing the selected dish, accompanied by a helpful video tutorial.
+preparing the selected dish, accompanied by a helpful video tutorial. Moreover, the app offers search functionality, allowing users to easily search for specific meals. Additionally, the app enables users to save their favorite meals, allowing them to quickly access and refer back to them in the future.
 
 # 💡 Preview
 
