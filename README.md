@@ -22,17 +22,20 @@ download app apk : https://www.mediafire.com/file/r27yhrexk7203iw/EasyFood.apk/f
 
 # 🌟 Libraries and technologies used
 
-- Navigation component : to manage navigation within the app and creating a single activity that contains multiple fragments, rather than creating multiple activities. 
+- Navigation component: to manage navigation within the app and creating a single activity that contains multiple fragments, rather than creating multiple activities. 
 
-- Retrofit : to make HTTP connection with the rest API and convert meal json file to Kotlin/Java
+- Retrofit: to make HTTP connection with the rest API and convert meal json file to Kotlin/Java
   object.
   
-- Room : to save data (favourite meals) in a local database on the user's device. This can be useful for caching data or for offline functionality.
+- Room: to save data (favourite meals) in a local database on the user's device. This can be useful for caching data or for offline functionality.
 
-- MVVM & LiveData : these libraries help in saperating the logic code from the views. This makes the app easier to maintain and update. 
-  LiveData helps in saving the state of the app's views in case the screen configuration changes (e.g., if the device is rotated).
+- MVVM:  this pattern helps in saperating the app's UI logic from its business logic. This makes the app easier to maintain and update. 
+
+- LiveData:  a library for reactive programming in Android that helps to create observable data that can be updated and observed in real-time.
+  it is useful for managing the state of the app's UI, since it allows changes to the data to be propagated to any observers automatically.
+ LiveData is designed to be lifecycle-aware, which means it automatically cleans up any observers when the component they're attached to (such as an activity or fragment) is destroyed. 
   
-- RxKotlin : to handle asynchronous background threading, such as network requests or database operations, without blocking the main thread or causing performance issues.
+- RxKotlin: to handle asynchronous background threading, such as network requests or database operations, without blocking the main thread or causing performance issues.
 
 - Dagger Hilt: for dependency injection to simplify the app's architecture and make it easier to manage dependencies between different components.
 
