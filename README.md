@@ -22,14 +22,20 @@ download app apk : https://www.mediafire.com/file/r27yhrexk7203iw/EasyFood.apk/f
 
 # 🌟 Libraries and technologies used
 
-- Navigation component : one activity contains multiple fragments instead of creating multiple
-  activites.
-- Retrofit : making HTTP connection with the rest API and convert meal json file to Kotlin/Java
+- Navigation component : to manage navigation within the app and creating a single activity that contains multiple fragments, rather than creating multiple activities. 
+
+- Retrofit : to make HTTP connection with the rest API and convert meal json file to Kotlin/Java
   object.
-- Room : Save meals in local database.
-- MVVM & LiveData : Saperate logic code from views and save the state in case the screen
-  configuration changes.
-- RxKotlin : for asynchrounos background threading.
-- Dagger Hilt: for dependency injection.
-- view binding : instead of inflating views manually view binding will take care of that.
-- Glide : Catch images and load them in imageView.
+  
+- Room : to save data (favourite meals) in a local database on the user's device. This can be useful for caching data or for offline functionality.
+
+- MVVM & LiveData : these libraries help in saperating the logic code from the views. This makes the app easier to maintain and update. 
+  LiveData helps in saving the state of the app's views in case the screen configuration changes (e.g., if the device is rotated).
+  
+- RxKotlin : to handle asynchronous background threading, such as network requests or database operations, without blocking the main thread or causing performance issues.
+
+- Dagger Hilt: for dependency injection to simplify the app's architecture and make it easier to manage dependencies between different components.
+
+- view binding : to automates the process of inflating views in the app's UI instead of manually inflating views in code.
+
+- Glide : for loading and caching images in the app's UI.
