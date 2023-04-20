@@ -1,11 +1,14 @@
 package com.example.easyfood.fragments
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
@@ -28,11 +31,6 @@ class SearchFragment : Fragment() {
 
     }
 
-    private fun searchMeals() {
-        val searchQuery = binding.edSearch.text.toString()
-        viewModel.searchMeal(searchQuery)
-
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -47,22 +45,50 @@ class SearchFragment : Fragment() {
         prepareRecyclerView()
 
         observeSearchedMealsLiveData()
-
+        binding.llNotFound.isVisible = false
         binding.imgSearchArrow.setOnClickListener {
             searchMeals()
         }
-        // onTextEditFinished()
+
+        binding.edSearch.setOnEditorActionListener { _, actionId: Int, _ ->
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                searchMeals()
+                getView()?.hideKeyboard()
+            }
+            true
+        }
+
         onMealClicked()
         observeStatusMessageLiveData()
 
 
     }
 
+    private fun searchMeals() {
+        val searchQuery = binding.edSearch.text.toString()
+        if (searchQuery.isNotBlank()) {
+            viewModel.searchMeal(searchQuery)
+
+        } else {
+            searchedMealsAdapter.setMealList(listOf())
+        }
+        binding.llNotFound.isVisible = false
+
+
+    }
+
+    private fun View.hideKeyboard() {
+        val inputMethodManager =
+            activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.hideSoftInputFromWindow(windowToken, 0)
+    }
+
     private fun observeStatusMessageLiveData() {
         viewModel.observeStatusMessageLiveData().observe(viewLifecycleOwner) {
-
-            Toast.makeText(activity, it.toString(), Toast.LENGTH_SHORT).show()
-
+            binding.llNotFound.isVisible = true
+            binding.tvNotFound.text =
+                "Sorry, we couldn’t find\n any matches for ${binding.edSearch.text}"
+            searchedMealsAdapter.setMealList(listOf())
 
         }
     }
@@ -78,40 +104,19 @@ class SearchFragment : Fragment() {
         }
     }
 
-    /*  private fun onTextEditFinished() {
-          binding.edSearch.addTextChangedListener(object : TextWatcher {
-
-              override fun afterTextChanged(s: Editable) {
-                  viewModel.searchMeal(s.toString())
-              }
-
-
-              override fun beforeTextChanged(s: CharSequence, start: Int,
-                                             count: Int, after: Int) {
-              }
-
-              override fun onTextChanged(s: CharSequence, start: Int,
-                                         before: Int, count: Int) {
-              }
-          })
-      }
-  */
     private fun observeSearchedMealsLiveData() {
         viewModel.observeSearchMealLiveData().observe(viewLifecycleOwner) { mealList ->
 
-            var list = listOf<MealByCategory>()
-            if (mealList != null) {
-
-                list =
-                    mealList.meals.map {
-                        MealByCategory(
-                            it.idMeal,
-                            it.strMeal,
-                            it.strMealThumb
-                        )
-                    }
-            }
+            var list =
+                mealList.meals.map {
+                    MealByCategory(
+                        it.idMeal,
+                        it.strMeal,
+                        it.strMealThumb
+                    )
+                }
             searchedMealsAdapter.setMealList(list)
+
         }
 
     }

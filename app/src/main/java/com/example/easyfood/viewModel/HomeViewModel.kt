@@ -5,14 +5,17 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.easyfood.db.MealDatabase
-import com.example.easyfood.pojo.*
+import com.example.easyfood.pojo.CategoryList
+import com.example.easyfood.pojo.Meal
+import com.example.easyfood.pojo.MealByCategory
+import com.example.easyfood.pojo.MealByCategoryList
+import com.example.easyfood.pojo.MealList
 import com.example.easyfood.retrofit.MealApi
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 @HiltViewModel
@@ -168,7 +171,7 @@ class HomeViewModel @Inject constructor(
         val single = mealApi.searchMeal(searchQuery)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .delay(2, TimeUnit.SECONDS)
+
 
         val disposable = single.subscribeBy(onSuccess = { mealList ->
 

@@ -34,13 +34,6 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
-                    <ImageView
-                        android:id="@+id/img_search"
-                        android:layout_width="@dimen/_40sdp"
-                        android:layout_height="match_parent"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/ic_search" />
-
                     <TextView
                         android:id="@+id/tv_home"
                         android:layout_width="wrap_content"
@@ -50,7 +43,16 @@
                         android:text="Home"
                         android:textColor="@color/accent"
                         android:textSize="@dimen/_25ssp"
+
                         android:textStyle="bold" />
+
+                    <ImageView
+                        android:id="@+id/img_search"
+                        android:layout_width="@dimen/_8sdp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/ic_search" />
 
                 </LinearLayout>
 
