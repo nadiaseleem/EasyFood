@@ -12,7 +12,7 @@ preparing the selected dish, accompanied by a helpful video tutorial. Moreover, 
   <img src="https://user-images.githubusercontent.com/37695970/231596964-bf7bbc1c-00f7-4c2e-b80e-b67efa89e5cb.png" width="279" height="600">
   <img src="https://user-images.githubusercontent.com/37695970/231597100-84ccf5e4-9673-494a-a350-34466a76232f.png" width="279" height="600">
   <img src="https://user-images.githubusercontent.com/37695970/231596982-3c17e5bf-903e-4c46-98d9-e25d4a3ba79e.png" width="279" height="600">
-  <img src="https://user-images.githubusercontent.com/37695970/231597109-19e8eb98-3a04-4f89-b54c-d72e635847f7.png" width="279" height="600">
+  <img src="https://github.com/nadiaseleem/EasyFood/assets/37695970/b152a01a-a4ef-493c-8368-64f90daaef12" width="279" height="600">
    <img src="https://github.com/nadiaseleem/EasyFood/assets/37695970/edb3d7cf-17e9-4673-a107-d419637a9e77" width="279" height="600">
   <img src="https://user-images.githubusercontent.com/37695970/231596994-4a4f19f3-63e8-4326-b69b-220c93c0eba8.png" width="279" height="600">
   <img src="https://user-images.githubusercontent.com/37695970/231597011-bb0c5693-4453-4a9c-9c3a-bb73bdad4546.png" width="279" height="600">
@@ -20,6 +20,7 @@ preparing the selected dish, accompanied by a helpful video tutorial. Moreover, 
   <img src="https://user-images.githubusercontent.com/37695970/231597083-e430dd86-1a83-4807-bcf8-e61552950c46.png" width="279" height="600">
 
 </p>
+
 
 
 # 🌟 Libraries and technologies used
