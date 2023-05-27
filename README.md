@@ -25,7 +25,7 @@ preparing the selected dish, accompanied by a helpful video tutorial. Moreover, 
 
 # 🌟 Libraries and technologies used
 
-- Navigation component: to manage navigation within the app and creating a single activity that contains multiple fragments, rather than creating multiple activities. 
+- Navigation component: to manage navigation within the app and creating a single activity that contains multiple fragments, rather than creating multiple activities. (Single Activity Pattern)
 
 - Retrofit: to make HTTP connection with the rest API and convert meal json file to Kotlin/Java
   object.
