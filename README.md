@@ -9,17 +9,18 @@ preparing the selected dish, accompanied by a helpful video tutorial. Moreover, 
 📱 download app apk : https://www.mediafire.com/file/zca5kywpsn9nsad/easyfood.apk/file
 
 <p align="center">
-  <img src="https://user-images.githubusercontent.com/37695970/231596964-bf7bbc1c-00f7-4c2e-b80e-b67efa89e5cb.png" width="279" height="600">
-  <img src="https://user-images.githubusercontent.com/37695970/231597100-84ccf5e4-9673-494a-a350-34466a76232f.png" width="279" height="600">
-  <img src="https://user-images.githubusercontent.com/37695970/231596982-3c17e5bf-903e-4c46-98d9-e25d4a3ba79e.png" width="279" height="600">
-  <img src="https://github.com/nadiaseleem/EasyFood/assets/37695970/b152a01a-a4ef-493c-8368-64f90daaef12" width="279" height="600">
-   <img src="https://github.com/nadiaseleem/EasyFood/assets/37695970/edb3d7cf-17e9-4673-a107-d419637a9e77" width="279" height="600">
-  <img src="https://user-images.githubusercontent.com/37695970/231596994-4a4f19f3-63e8-4326-b69b-220c93c0eba8.png" width="279" height="600">
-  <img src="https://user-images.githubusercontent.com/37695970/231597011-bb0c5693-4453-4a9c-9c3a-bb73bdad4546.png" width="279" height="600">
-  <img src="https://user-images.githubusercontent.com/37695970/231597051-36f6e0fb-11ce-4e60-babe-9b5e7e05d1d9.png" width="279" height="600">
-  <img src="https://user-images.githubusercontent.com/37695970/231597083-e430dd86-1a83-4807-bcf8-e61552950c46.png" width="279" height="600">
+  <img src="https://github.com/nadiaseleem/EasyFood/assets/37695970/f8dd4864-4055-4bdc-af81-eef654d46e2e" width="279" height="600">
+  <img src="https://github.com/nadiaseleem/EasyFood/assets/37695970/3614a0d3-ceb8-423b-a673-2ece9f6122c1" width="279" height="600">
+  <img src="https://github.com/nadiaseleem/EasyFood/assets/37695970/4f881fc9-1837-4381-9154-280be20d5b2a" width="279" height="600">
+  <img src="https://github.com/nadiaseleem/EasyFood/assets/37695970/e75a6314-f487-41e8-91e0-334c78c96725" width="279" height="600">
+   <img src="https://github.com/nadiaseleem/EasyFood/assets/37695970/d0e39117-5c43-4b67-9c3b-dae160b73506" width="279" height="600">
+  <img src="https://github.com/nadiaseleem/EasyFood/assets/37695970/ccfe5d13-43b0-4d6e-bb99-d7bd0d8a46d2" width="279" height="600">
+  <img src="https://github.com/nadiaseleem/EasyFood/assets/37695970/94d3e99f-b0a3-4c84-b746-336845ee337b" width="279" height="600">
+  <img src="https://github.com/nadiaseleem/EasyFood/assets/37695970/2b0273dd-0a0c-4316-b9bd-17ed3f5154a4" width="279" height="600">
+  <img src="https://github.com/nadiaseleem/EasyFood/assets/37695970/2c466c73-4616-49a6-9e81-9f01ea8e160e" width="279" height="600">
 
 </p>
+
 
 
 
