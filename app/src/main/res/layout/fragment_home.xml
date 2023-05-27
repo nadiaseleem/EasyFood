@@ -48,10 +48,10 @@
 
                     <ImageView
                         android:id="@+id/img_search"
-                        android:layout_width="@dimen/_8sdp"
-                        android:layout_height="match_parent"
+                        android:layout_width="@dimen/_35sdp"
+                        android:layout_height="@dimen/_35sdp"
                         android:layout_weight="1"
-                        android:scaleType="centerCrop"
+                        android:scaleType="fitCenter"
                         android:src="@drawable/ic_search" />
 
                 </LinearLayout>
