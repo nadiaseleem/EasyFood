@@ -1,46 +1,60 @@
-package com.example.easyfood.ui.activities
+package com.example.easyfood.ui.fragments
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
-import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
-import com.example.easyfood.activities.MealActivity
-import com.example.easyfood.databinding.ActivitySearchBinding
-import com.example.easyfood.fragments.HomeFragment
+import com.example.easyfood.databinding.FragmentSearchBinding
 import com.example.easyfood.pojo.MealByCategory
 import com.example.easyfood.ui.adapters.MealsAdapter
 import com.example.easyfood.viewModel.HomeViewModel
-import dagger.hilt.android.AndroidEntryPoint
 
-@AndroidEntryPoint
-class SearchActivity : AppCompatActivity() {
-    private lateinit var binding: ActivitySearchBinding
+
+class SearchFragment : Fragment() {
+
+    private lateinit var binding: FragmentSearchBinding
     private lateinit var searchedMealsAdapter: MealsAdapter
-    val viewModel: HomeViewModel by viewModels()
+    val viewModel: HomeViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivitySearchBinding.inflate(layoutInflater)
-
-        setContentView(binding.root)
         searchedMealsAdapter = MealsAdapter()
+
+    }
+
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        binding = FragmentSearchBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         prepareRecyclerView()
+
         observeSearchedMealsLiveData()
+
         binding.llNotFound.isVisible = false
         binding.imgSearchArrow.setOnClickListener {
             searchMeals()
         }
+        // onTextEditFinished()
 
         binding.edSearch.setOnEditorActionListener { _, actionId: Int, _ ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 searchMeals()
-                this.currentFocus?.hideKeyboard()
+                getView()?.hideKeyboard()
             }
             true
         }
@@ -66,12 +80,13 @@ class SearchActivity : AppCompatActivity() {
 
     private fun View.hideKeyboard() {
         val inputMethodManager =
-            getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         inputMethodManager.hideSoftInputFromWindow(windowToken, 0)
     }
 
+
     private fun observeStatusMessageLiveData() {
-        viewModel.observeStatusMessageLiveData().observe(this) {
+        viewModel.observeStatusMessageLiveData().observe(viewLifecycleOwner) {
             binding.llNotFound.isVisible = true
             binding.tvNotFound.text =
                 "Sorry, we could not find\n any matches for ${binding.edSearch.text}"
@@ -81,18 +96,18 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun onMealClicked() {
-        searchedMealsAdapter.onMealClick = {
-            val intent = Intent(this, MealActivity::class.java)
-            intent.putExtra(HomeFragment.MEAL_ID, it.idMeal)
-            intent.putExtra(HomeFragment.MEAL_NAME, it.strMeal)
-            intent.putExtra(HomeFragment.MEAL_THUMB, it.strMealThumb)
-
-            startActivity(intent)
+        searchedMealsAdapter.onMealClick = { meal ->
+            val action = SearchFragmentDirections.actionSearchFragmentToMealFragment(
+                mealId = meal.idMeal,
+                mealName = meal.strMeal.toString(),
+                mealThumb = meal.strMealThumb.toString()
+            )
+            findNavController().navigate(action)
         }
     }
 
     private fun observeSearchedMealsLiveData() {
-        viewModel.observeSearchMealLiveData().observe(this) { mealList ->
+        viewModel.observeSearchMealLiveData().observe(viewLifecycleOwner) { mealList ->
 
             var list =
                 mealList.meals.map {

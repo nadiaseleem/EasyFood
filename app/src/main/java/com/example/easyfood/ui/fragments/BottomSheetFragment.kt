@@ -1,33 +1,32 @@
-package com.example.easyfood.fragments.bottomSheet
+package com.example.easyfood.ui.fragments
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
-import com.example.easyfood.activities.MealActivity
 import com.example.easyfood.databinding.FragmentBottomSheetBinding
-import com.example.easyfood.fragments.HomeFragment
 import com.example.easyfood.pojo.Meal
 import com.example.easyfood.viewModel.HomeViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
-
-private const val MEAL_ID = "param1"
-
 class BottomSheetFragment : BottomSheetDialogFragment() {
 
-    private var mealId: String? = null
-    private var meal: Meal? = null
-
+    private lateinit var mealId: String
+    private lateinit var meal: Meal
     private lateinit var binding: FragmentBottomSheetBinding
     val viewModel: HomeViewModel by activityViewModels()
+
+    companion object {
+        const val MEAL_ID = "mealId"
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            mealId = it.getString(MEAL_ID)
+            mealId = it.getString(MEAL_ID).toString()
         }
 
     }
@@ -42,34 +41,40 @@ class BottomSheetFragment : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.getMealDetails(mealId as String)
-
+        viewModel.getMealDetails(mealId)
         observeMealDetails()
         onReadMoreClicked()
-        onButtomSheeetClick()
+        onBottomSheetClick()
     }
 
     private fun onReadMoreClicked() {
         binding.tvReadMoreBtnsheet.setOnClickListener {
-            if (meal != null) {
-                val intent = Intent(activity, MealActivity::class.java)
-                intent.putExtra(HomeFragment.MEAL_ID, meal!!.idMeal)
-                intent.putExtra(HomeFragment.MEAL_NAME, meal!!.strMeal)
-                intent.putExtra(HomeFragment.MEAL_THUMB, meal!!.strMealThumb)
-                startActivity(intent)
-            }
-        }
+            meal?.let { meal ->
+                val action = BottomSheetFragmentDirections.actionBottomSheetFragmentToMealFragment(
+                    mealId = meal.idMeal,
+                    mealName = meal.strMeal.toString(),
+                    mealThumb = meal.strMealThumb.toString()
+                )
 
+                findNavController().navigate(action)
+
+            }
+
+        }
     }
 
-    private fun onButtomSheeetClick() {
+
+    private fun onBottomSheetClick() {
         binding.bottomSheet.setOnClickListener {
-            if (meal != null) {
-                val intent = Intent(activity, MealActivity::class.java)
-                intent.putExtra(HomeFragment.MEAL_ID, meal!!.idMeal)
-                intent.putExtra(HomeFragment.MEAL_NAME, meal!!.strMeal)
-                intent.putExtra(HomeFragment.MEAL_THUMB, meal!!.strMealThumb)
-                startActivity(intent)
+            meal?.let { meal ->
+                val action = BottomSheetFragmentDirections.actionBottomSheetFragmentToMealFragment(
+                    mealId = meal.idMeal,
+                    mealName = meal.strMeal.toString(),
+                    mealThumb = meal.strMealThumb.toString()
+                )
+
+                findNavController().navigate(action)
+
             }
         }
     }
@@ -87,14 +92,5 @@ class BottomSheetFragment : BottomSheetDialogFragment() {
         }
     }
 
-    companion object {
 
-        @JvmStatic
-        fun newInstance(param1: String) =
-            BottomSheetFragment().apply {
-                arguments = Bundle().apply {
-                    putString(MEAL_ID, param1)
-                }
-            }
-    }
 }

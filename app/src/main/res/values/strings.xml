@@ -1,4 +1,4 @@
 <resources>
     <string name="app_name">EasyFood</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="category_label">{categoryName} Meals</string>
 </resources>

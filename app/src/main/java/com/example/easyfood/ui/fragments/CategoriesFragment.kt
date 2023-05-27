@@ -1,14 +1,13 @@
-package com.example.easyfood.fragments
+package com.example.easyfood.ui.fragments
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
-import com.example.easyfood.activities.CategoryMealsActivity
 import com.example.easyfood.databinding.FragmentCategoriesBinding
 import com.example.easyfood.ui.adapters.CategoriesAdapter
 import com.example.easyfood.viewModel.HomeViewModel
@@ -37,7 +36,7 @@ class CategoriesFragment : Fragment() {
         prepareRecyclerView()
         viewModel.getCategories()
         observeCategories()
-        onCategroyClick()
+        onCategoryClick()
 
     }
 
@@ -55,13 +54,15 @@ class CategoriesFragment : Fragment() {
         }
     }
 
-    private fun onCategroyClick() {
+    private fun onCategoryClick() {
         categoriesAdapter.onCategryClick = { category ->
-            val intent = Intent(activity, CategoryMealsActivity::class.java)
-            intent.putExtra(HomeFragment.CATEGORY_ID, category.idCategory)
-            intent.putExtra(HomeFragment.CATEGORY_NAME, category.strCategory)
-            intent.putExtra(HomeFragment.CATEGORY_THUMB, category.strCategoryThumb)
-            startActivity(intent)
+            val action =
+                CategoriesFragmentDirections.actionCategoriesFragmentToCategoryMealsFragment(
+                    categoryId = category.idCategory,
+                    categoryName = category.strCategory,
+                    categoryThumb = category.strCategoryThumb
+                )
+            findNavController().navigate(action)
         }
     }
 

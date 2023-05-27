@@ -1,39 +1,63 @@
-package com.example.easyfood.activities
+package com.example.easyfood.ui.fragments
 
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.os.PersistableBundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
-import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import com.bumptech.glide.Glide
 import com.example.easyfood.R
-import com.example.easyfood.databinding.ActivityMealBinding
-import com.example.easyfood.fragments.HomeFragment
+import com.example.easyfood.databinding.FragmentMealBinding
 import com.example.easyfood.pojo.MealByCategory
 import com.example.easyfood.viewModel.MealViewModel
-import dagger.hilt.android.AndroidEntryPoint
 
-private const val IS_FAVOURITE = "IsFavourite"
+const val IS_FAVOURITE = "IsFavourite"
 
-@AndroidEntryPoint
-class MealActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityMealBinding
+class MealFragment : Fragment() {
+
+    private lateinit var binding: FragmentMealBinding
     private lateinit var mealId: String
     private lateinit var mealName: String
     private lateinit var mealThumb: String
     private lateinit var youtubeLink: String
     private var meal: MealByCategory? = null
     private var isFavourite: Boolean = true
-    val viewModel: MealViewModel by viewModels()
+    val viewModel: MealViewModel by activityViewModels()
+
+    companion object {
+        const val MEAL_ID = "mealId"
+        const val MEAL_NAME = "mealName"
+        const val MEAL_THUMB = "mealThumb"
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMealBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-        getMealInformationFromIntent()
+        arguments?.let {
+            mealId = it.getString(MEAL_ID).toString()
+            mealName = it.getString(MEAL_NAME).toString()
+            mealThumb = it.getString(MEAL_THUMB).toString()
+        }
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        // Inflate the layout for this fragment
+        binding = FragmentMealBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val savedBool = savedInstanceState?.getBoolean(IS_FAVOURITE)
+        savedBool?.let {
+            isFavourite = it
+        }
         setInformationOnViews()
 
         loadingCase()
@@ -43,17 +67,16 @@ class MealActivity : AppCompatActivity() {
 
         onYoutubeImageClick()
 
-        onfavouriteButtonClick()
+        onFavouriteButtonClick()
 
-        observesisFavouriteLiveData()
+        observesIsFavouriteLiveData()
 
-        observestatusMessageLiveData()
-
+        observeStatusMessageLiveData()
     }
 
-    private fun observesisFavouriteLiveData() {
+    private fun observesIsFavouriteLiveData() {
 
-        this.viewModel.observeisFavouriteLiveData().observe(this) {
+        this.viewModel.observeisFavouriteLiveData().observe(viewLifecycleOwner) {
             isFavourite = it
 
             if (isFavourite) {
@@ -66,11 +89,11 @@ class MealActivity : AppCompatActivity() {
 
     }
 
-    private fun observestatusMessageLiveData() {
-        this.viewModel.observeStatusMessageLiveData().observe(this) {
+    private fun observeStatusMessageLiveData() {
+        this.viewModel.observeStatusMessageLiveData().observe(viewLifecycleOwner) {
 
             Toast.makeText(
-                this,
+                context,
                 "Please Check Your Internet Connection and Try Again!",
                 Toast.LENGTH_LONG
             ).show()
@@ -80,7 +103,7 @@ class MealActivity : AppCompatActivity() {
         }
     }
 
-    private fun onfavouriteButtonClick() {
+    private fun onFavouriteButtonClick() {
 
 
         binding.btnAddToFavourites.setOnClickListener {
@@ -116,7 +139,7 @@ class MealActivity : AppCompatActivity() {
 
     private fun setInformationOnViews() {
         binding.collapsingToolbar.title = mealName
-        Glide.with(applicationContext)
+        Glide.with(requireContext())
             .load(mealThumb)
             .into(binding.imgMealDetail)
 
@@ -125,7 +148,7 @@ class MealActivity : AppCompatActivity() {
 
     private fun observeMealDetails() {
 
-        this.viewModel.observeMealLiveData().observe(this) { meal ->
+        this.viewModel.observeMealLiveData().observe(viewLifecycleOwner) { meal ->
             onResponseCase()
             binding.tvContent.text = meal.strInstructions
             binding.tvCategoryInfo.text = "Category: " + meal.strCategory
@@ -141,14 +164,6 @@ class MealActivity : AppCompatActivity() {
         }
     }
 
-    private fun getMealInformationFromIntent() {
-
-        val intent = getIntent()
-        mealId = intent.getStringExtra(HomeFragment.MEAL_ID).toString()
-        mealName = intent.getStringExtra(HomeFragment.MEAL_NAME).toString()
-        mealThumb = intent.getStringExtra(HomeFragment.MEAL_THUMB).toString()
-
-    }
 
     private fun loadingCase() {
         binding.progressBar.visibility = View.VISIBLE
@@ -172,32 +187,11 @@ class MealActivity : AppCompatActivity() {
 
     }
 
-    override fun onStop() {
-        super.onStop()
 
-    }
-
-    override fun onSaveInstanceState(outState: Bundle, outPersistentState: PersistableBundle) {
-        super.onSaveInstanceState(outState, outPersistentState)
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
         outState.putBoolean(IS_FAVOURITE, isFavourite)
-
-
     }
 
-    override fun onRestoreInstanceState(
-        savedInstanceState: Bundle?,
-        persistentState: PersistableBundle?
-    ) {
-        super.onRestoreInstanceState(savedInstanceState, persistentState)
-        val savedBool = savedInstanceState?.getBoolean(IS_FAVOURITE)
-        savedBool?.let {
-            isFavourite = it
-        }
-    }
-
-    override fun onSupportNavigateUp(): Boolean {
-        return super.onSupportNavigateUp()
-    }
 
 }
-

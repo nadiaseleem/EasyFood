@@ -1,6 +1,5 @@
 package com.example.easyfood.fragments
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,15 +7,13 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
-import com.example.easyfood.activities.CategoryMealsActivity
-import com.example.easyfood.activities.MealActivity
+import com.example.easyfood.R
 import com.example.easyfood.databinding.FragmentHomeBinding
-import com.example.easyfood.fragments.bottomSheet.BottomSheetFragment
 import com.example.easyfood.pojo.Meal
-import com.example.easyfood.ui.activities.SearchActivity
 import com.example.easyfood.ui.adapters.CategoriesAdapter
 import com.example.easyfood.ui.adapters.MostPopularMealAdapter
 import com.example.easyfood.viewModel.HomeViewModel
@@ -30,13 +27,9 @@ class HomeFragment : Fragment() {
     val viewModel: HomeViewModel by activityViewModels()
 
     companion object {
-        const val MEAL_ID = "com.example.easyfood.fragments.idMeal"
-        const val MEAL_NAME = "com.example.easyfood.fragments.nameMeal"
-        const val MEAL_THUMB = "com.example.easyfood.fragments.thumbMeal"
-        const val CATEGORY_ID = "com.example.easyfood.fragments.idCategory"
-        const val CATEGORY_NAME = "com.example.easyfood.fragments.nameCategory"
-        const val CATEGORY_THUMB = "com.example.easyfood.fragments.thumbCategory"
-
+        const val MEAL_ID = "mealId"
+        const val MEAL_NAME = "mealName"
+        const val MEAL_THUMB = "mealThumb"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -71,40 +64,42 @@ class HomeFragment : Fragment() {
         prepareCategoriesRecyclerView()
         viewModel.getCategories()
         observeCategories()
-        onCategroyClick()
+        onCategoryClick()
         onLongPress()
-        onserachClick()
+        onsearchClick()
 
 
     }
 
-    private fun onserachClick() {
+    private fun onsearchClick() {
         binding.imgSearch.setOnClickListener {
-            val intent = Intent(activity, SearchActivity::class.java)
-            startActivity(intent)
+            findNavController().navigate(R.id.action_homeFragment_to_searchFragment)
         }
     }
 
 
     private fun onLongPress() {
         popularMealAdapter.onItemlongClick = { meal ->
-            BottomSheetFragment.newInstance(meal.idMeal).show(childFragmentManager, "Meal Info")
+            val action =
+                HomeFragmentDirections.actionHomeFragmentToBottomSheetFragment(mealId = meal.idMeal)
+            findNavController().navigate(action)
         }
     }
 
 
-    private fun onCategroyClick() {
+    private fun onCategoryClick() {
         categoriesAdapter.onCategryClick = { category ->
-            val intent = Intent(activity, CategoryMealsActivity::class.java)
-            intent.putExtra(CATEGORY_ID, category.idCategory)
-            intent.putExtra(CATEGORY_NAME, category.strCategory)
-            intent.putExtra(CATEGORY_THUMB, category.strCategoryThumb)
-            startActivity(intent)
+            val action = HomeFragmentDirections.actionHomeFragmentToCategoryMealsFragment(
+                categoryId = category.idCategory,
+                categoryName = category.strCategory,
+                categoryThumb = category.strCategoryThumb
+            )
+            findNavController().navigate(action)
         }
     }
 
 
-    fun observeRandomMeal() {
+    private fun observeRandomMeal() {
 
         viewModel.observeRandomMeal().observe(viewLifecycleOwner, object : Observer<Meal> {
             override fun onChanged(t: Meal?) {
@@ -120,16 +115,18 @@ class HomeFragment : Fragment() {
     }
 
     private fun onRandomMealClick() {
-        randomMeal?.let { randomMeal ->
-            binding.randomMeal.setOnClickListener {
-                val intent = Intent(activity, MealActivity::class.java)
-                intent.putExtra(MEAL_ID, randomMeal.idMeal)
-                intent.putExtra(MEAL_NAME, randomMeal.strMeal)
-                intent.putExtra(MEAL_THUMB, randomMeal.strMealThumb)
 
-                startActivity(intent)
+        binding.randomMeal.setOnClickListener {
+            randomMeal?.let { randomMeal ->
+                val action = HomeFragmentDirections.actionHomeFragmentToMealFragment(
+                    mealId = randomMeal.idMeal,
+                    mealName = randomMeal.strMeal.toString(),
+                    mealThumb = randomMeal.strMealThumb.toString()
+                )
+                findNavController().navigate(action)
             }
         }
+
     }
 
 
@@ -152,11 +149,13 @@ class HomeFragment : Fragment() {
 
     private fun onPopularItemClick() {
         popularMealAdapter.onItemClick = { meal ->
-            val intent = Intent(activity, MealActivity::class.java)
-            intent.putExtra(HomeFragment.MEAL_ID, meal.idMeal)
-            intent.putExtra(HomeFragment.MEAL_NAME, meal.strMeal)
-            intent.putExtra(HomeFragment.MEAL_THUMB, meal.strMealThumb)
-            startActivity(intent)
+            val action = HomeFragmentDirections.actionHomeFragmentToMealFragment(
+                mealId = meal.idMeal,
+                mealName = meal.strMeal.toString(),
+                mealThumb = meal.strMealThumb.toString()
+            )
+            findNavController().navigate(action)
+
         }
     }
 

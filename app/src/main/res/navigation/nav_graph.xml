@@ -8,16 +8,92 @@
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.example.easyfood.fragments.HomeFragment"
-        android:label="fragment_home"
-        tools:layout="@layout/fragment_home" />
+        android:label="EasyFood"
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_homeFragment_to_searchFragment"
+            app:destination="@id/searchFragment"
+            app:popUpTo="@id/homeFragment"
+            app:popUpToSaveState="true" />
+        <action
+            android:id="@+id/action_homeFragment_to_mealFragment"
+            app:destination="@id/mealFragment"
+            app:popUpTo="@id/homeFragment"
+            app:popUpToSaveState="true" />
+        <action
+            android:id="@+id/action_homeFragment_to_categoryMealsFragment"
+            app:destination="@id/categoryMealsFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_bottomSheetFragment"
+            app:destination="@id/bottomSheetFragment" />
+    </fragment>
     <fragment
         android:id="@+id/favouritesFragment"
         android:name="com.example.easyfood.fragments.FavouritesFragment"
-        android:label="fragment_favourites"
-        tools:layout="@layout/fragment_favourites" />
+        android:label="Favourites"
+        tools:layout="@layout/fragment_favourites">
+        <action
+            android:id="@+id/action_favouritesFragment_to_mealFragment"
+            app:destination="@id/mealFragment" />
+    </fragment>
     <fragment
         android:id="@+id/categoriesFragment"
-        android:name="com.example.easyfood.fragments.CategoriesFragment"
-        android:label="fragment_categories"
-        tools:layout="@layout/fragment_categories" />
+        android:name="com.example.easyfood.ui.fragments.CategoriesFragment"
+        android:label="Categories"
+        tools:layout="@layout/fragment_categories">
+        <action
+            android:id="@+id/action_categoriesFragment_to_categoryMealsFragment"
+            app:destination="@id/categoryMealsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="com.example.easyfood.ui.fragments.SearchFragment"
+        android:label="Search meals">
+        <action
+            android:id="@+id/action_searchFragment_to_mealFragment"
+            app:destination="@id/mealFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/mealFragment"
+        android:name="com.example.easyfood.ui.fragments.MealFragment"
+        android:label="">
+        <argument
+            android:name="mealId"
+            app:argType="string" />
+        <argument
+            android:name="mealName"
+            app:argType="string" />
+        <argument
+            android:name="mealThumb"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/categoryMealsFragment"
+        android:name="com.example.easyfood.ui.fragments.CategoryMealsFragment"
+        android:label="@string/category_label"
+        tools:layout="@layout/fragment_category_meals">
+        <action
+            android:id="@+id/action_categoryMealsFragment_to_mealFragment"
+            app:destination="@id/mealFragment" />
+        <argument
+            android:name="categoryId"
+            app:argType="string" />
+        <argument
+            android:name="categoryName"
+            app:argType="string" />
+        <argument
+            android:name="categoryThumb"
+            app:argType="string" />
+    </fragment>
+    <dialog
+        android:id="@+id/bottomSheetFragment"
+        android:name="com.example.easyfood.ui.fragments.BottomSheetFragment"
+        android:label="">
+        <action
+            android:id="@+id/action_bottomSheetFragment_to_mealFragment"
+            app:destination="@id/mealFragment" />
+        <argument
+            android:name="mealId"
+            app:argType="string" />
+    </dialog>
 </navigation>

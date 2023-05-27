@@ -1,4 +1,4 @@
-package com.example.easyfood.ui.activities
+package com.example.easyfood.di
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp

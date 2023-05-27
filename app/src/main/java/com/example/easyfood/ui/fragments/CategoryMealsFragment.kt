@@ -1,33 +1,60 @@
-package com.example.easyfood.activities
+package com.example.easyfood.ui.fragments
 
-import android.content.Intent
+
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
-import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
-import com.example.easyfood.databinding.ActivityCategoryMealsBinding
-import com.example.easyfood.fragments.HomeFragment
+import com.example.easyfood.databinding.FragmentCategoryMealsBinding
 import com.example.easyfood.ui.adapters.MealsInCategoryAdapter
 import com.example.easyfood.viewModel.CategoryMealsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class CategoryMealsActivity : AppCompatActivity() {
-    lateinit var binding: ActivityCategoryMealsBinding
+class CategoryMealsFragment : Fragment() {
+    lateinit var binding: FragmentCategoryMealsBinding
     lateinit var categoryId: String
     lateinit var categoryName: String
     lateinit var categoryThumb: String
     lateinit var mealsInCategoryAdapter: MealsInCategoryAdapter
-    val viewModel: CategoryMealsViewModel by viewModels()
+    val viewModel: CategoryMealsViewModel by activityViewModels()
+
+    companion object {
+        const val CATEGORY_ID = "categoryId"
+        const val CATEGORY_NAME = "categoryName"
+        const val CATEGORY_THUMB = "categoryThumb"
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityCategoryMealsBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+
+        arguments?.let {
+            categoryId = it.getString(CATEGORY_ID).toString()
+            categoryName = it.getString(CATEGORY_NAME).toString()
+            categoryThumb = it.getString(CATEGORY_THUMB).toString()
+        }
+
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        // Inflate the layout for this fragment
+        binding = FragmentCategoryMealsBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        activity?.title = "${categoryName} Meals"
         loadingCase()
-        getInformatrionFromIntent()
         viewModel.getCategoryMeals(categoryName)
         observeMealsInCategory()
         mealsInCategoryAdapter = MealsInCategoryAdapter()
@@ -39,11 +66,14 @@ class CategoryMealsActivity : AppCompatActivity() {
 
     private fun onMealClick() {
         mealsInCategoryAdapter.onMealClick = { meal ->
-            val intent = Intent(this, MealActivity::class.java)
-            intent.putExtra(HomeFragment.MEAL_ID, meal.idMeal)
-            intent.putExtra(HomeFragment.MEAL_NAME, meal.strMeal)
-            intent.putExtra(HomeFragment.MEAL_THUMB, meal.strMealThumb)
-            startActivity(intent)
+            val action = CategoryMealsFragmentDirections.actionCategoryMealsFragmentToMealFragment(
+                mealId = meal.idMeal,
+                mealName = meal.strMeal.toString(),
+                mealThumb = meal.strMealThumb.toString()
+            )
+
+            findNavController().navigate(action)
+
         }
 
     }
@@ -52,11 +82,11 @@ class CategoryMealsActivity : AppCompatActivity() {
 
         binding.rvMeals.adapter = mealsInCategoryAdapter
         binding.rvMeals.layoutManager =
-            GridLayoutManager(this, 2, GridLayoutManager.VERTICAL, false)
+            GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false)
     }
 
     private fun observeMealsInCategory() {
-        viewModel.observeMealsInCateoryLiveData().observe(this) { meals ->
+        viewModel.observeMealsInCateoryLiveData().observe(viewLifecycleOwner) { meals ->
             onResponseCase()
             mealsInCategoryAdapter.setMealList(meals.meals)
             binding.tvCategoryCount.text =
@@ -64,15 +94,6 @@ class CategoryMealsActivity : AppCompatActivity() {
         }
     }
 
-
-    private fun getInformatrionFromIntent() {
-        val intent = getIntent()
-        categoryId = intent.getStringExtra(HomeFragment.CATEGORY_ID).toString()
-        categoryName = intent.getStringExtra(HomeFragment.CATEGORY_NAME).toString()
-        categoryThumb = intent.getStringExtra(HomeFragment.CATEGORY_THUMB).toString()
-
-
-    }
 
     private fun loadingCase() {
         binding.progressIndicator.visibility = View.VISIBLE
@@ -92,10 +113,10 @@ class CategoryMealsActivity : AppCompatActivity() {
     }
 
     private fun observeStatusMessageLiveData() {
-        viewModel.observeStatusMessageLiveData().observe(this) {
+        viewModel.observeStatusMessageLiveData().observe(viewLifecycleOwner) {
 
             Toast.makeText(
-                this,
+                context,
                 "Please Check Your Internet Connection and Try Again!",
                 Toast.LENGTH_LONG
             ).show()

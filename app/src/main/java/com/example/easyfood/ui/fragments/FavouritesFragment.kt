@@ -1,16 +1,15 @@
 package com.example.easyfood.fragments
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
-import com.example.easyfood.activities.MealActivity
 import com.example.easyfood.databinding.FragmentFavouritesBinding
 import com.example.easyfood.pojo.MealByCategory
 import com.example.easyfood.ui.adapters.MealsAdapter
@@ -42,7 +41,6 @@ class FavouritesFragment : Fragment() {
         prepareRecyclerView()
         observeFavouriteMeals()
         onMealClick()
-
         val itemTouchHelper = object : ItemTouchHelper.SimpleCallback(
             ItemTouchHelper.UP or ItemTouchHelper.DOWN,
             ItemTouchHelper.RIGHT or ItemTouchHelper.LEFT
@@ -81,11 +79,14 @@ class FavouritesFragment : Fragment() {
 
     private fun onMealClick() {
         mealsAdapter.onMealClick = { meal ->
-            val intent = Intent(activity, MealActivity::class.java)
-            intent.putExtra(HomeFragment.MEAL_ID, meal.idMeal)
-            intent.putExtra(HomeFragment.MEAL_NAME, meal.strMeal)
-            intent.putExtra(HomeFragment.MEAL_THUMB, meal.strMealThumb)
-            startActivity(intent)
+            val action = FavouritesFragmentDirections.actionFavouritesFragmentToMealFragment(
+                mealId = meal.idMeal,
+                mealName = meal.strMeal.toString(),
+                mealThumb = meal.strMealThumb.toString()
+            )
+
+            findNavController().navigate(action)
+
         }
     }
 
